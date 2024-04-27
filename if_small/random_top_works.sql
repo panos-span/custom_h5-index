@@ -4,7 +4,7 @@ CREATE TABLE rolap.random_top_works AS
 WITH top_orcids AS (SELECT orcid,
                            impact_factor
                     FROM rolap.orcid_if_filtered
-                    WHERE impact_factor > 50),
+                    WHERE impact_factor > 25),
      top_author_works AS (SELECT DISTINCT works.doi,
                                           impact_factor
                           FROM top_orcids
