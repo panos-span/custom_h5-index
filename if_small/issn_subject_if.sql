@@ -1,4 +1,4 @@
--- Calculate h5-index for each ISSN
+-- Calculate impact-factor for each ISSN
 
 -- Create indexes for subjects
 CREATE INDEX IF NOT EXISTS rolap.works_issn_subject_doi_idx ON works_issn_subject(doi);

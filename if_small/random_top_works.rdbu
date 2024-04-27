@@ -1,7 +1,7 @@
 BEGIN SETUP
 rolap.orcid_if_filtered:
-orcid	impact_factor
-o77	26
+orcid	h5_index
+o77	77
 o50	51
 o12	12
 o2	2
