@@ -1,4 +1,4 @@
--- Creates a view that lists the top 20 ISSNs by subject based on the H5 index.
+-- Creates a table that lists the top 20 ISSNs by subject based on the H5 index.
 
 CREATE TABLE rolap.top_issn_by_subject AS
     SELECT issn, subject
