@@ -4,3 +4,6 @@ reports
 rolap
 simple-rolap
 tables
+impact.db
+rolap.db
+*.db

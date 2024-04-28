@@ -67,8 +67,9 @@ def graph_properties(rolap_connection, graph_connection, selection, file_name):
             graph = citation_graph(graph_connection, id)
             print(id, graph)
             avg_clustering = nx.average_clustering(graph)
-            # avg_path_length = nx.average_shortest_path_length(graph)
+            avg_path_length = nx.average_shortest_path_length(graph)
             fh.write(f"{avg_clustering}\n")
+            fh.write(f"{avg_path_length}\n")
             print(id, avg_clustering)
     cursor.close()
 
