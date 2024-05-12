@@ -13,10 +13,15 @@ include ../common/Makefile
 populate: $(CROSSREF_DIR)
 	# Populate database with DOIs of works and their references
 	$(TIME) $(A3K) --debug progress populate "$(MAINDB).db" crossref "$(CROSSREF_DIR)" \
-	  --sample 'random.random() < 0.0002' \
+	  --sample 'random.random() < 0.2' \
 	  --columns works.id works.doi work_subjects.name \
 	    work_references.doi work_references.work_id \
 		works.issn_print works.issn_electronic work_subjects.work_id \
 	    work_authors.work_id work_authors.orcid \
 	  --row-selection 'works.published_year BETWEEN 2017 AND 2021'
 	touch $@
+
+clear:
+	make clean
+	rm .* *.db journal-names populate 2>/dev/null
+	rm -rf simple-rolap
