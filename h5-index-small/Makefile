@@ -5,7 +5,7 @@
 #
 
 export MAINDB?=h5
-export DEPENDENCIES=populate journal-names
+export DEPENDENCIES=populate journal-names asjcs link-works-asjcs
 
 include ../common/Makefile
 
