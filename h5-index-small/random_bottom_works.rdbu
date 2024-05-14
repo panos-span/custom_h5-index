@@ -39,10 +39,10 @@ d552	86
 
 END
 
-INCLUDE CREATE random_top_works.sql
+INCLUDE CREATE random_bottom_works.sql
 
 BEGIN RESULT
-rolap.random_top_works:
+rolap.random_bottom_works:
 id	citations_number
 771	150
 501	60

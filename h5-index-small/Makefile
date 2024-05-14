@@ -13,7 +13,7 @@ include ../common/Makefile
 populate: $(CROSSREF_DIR)
 	# Populate database with DOIs of works and their references
 	$(TIME) $(A3K) --debug progress populate "$(MAINDB).db" crossref "$(CROSSREF_DIR)" \
-	  --sample 'random.random() < 0.2' \
+	  --sample 'random.random() < 0.0002' \
 	  --columns works.id works.doi work_subjects.name \
 	    work_references.doi work_references.work_id \
 		works.issn_print works.issn_electronic work_subjects.work_id \

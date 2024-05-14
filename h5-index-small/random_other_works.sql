@@ -1,16 +1,16 @@
 CREATE INDEX IF NOT EXISTS rolap.work_citations_citations_number_idx ON work_citations (citations_number);
 
-CREATE INDEX IF NOT EXISTS rolap.random_top_works_citations_number_idx ON random_top_works (citations_number);
+CREATE INDEX IF NOT EXISTS rolap.random_bottom_works_citations_number_idx ON random_bottom_works (citations_number);
 
 CREATE TABLE rolap.random_other_works AS
-WITH candidate_works AS (SELECT random_top_works.id AS top_work_id,
+WITH candidate_works AS (SELECT random_bottom_works.id AS top_work_id,
                                 works.id            AS other_work_id,
-                                random_top_works.citations_number
-                         FROM rolap.random_top_works
+                                random_bottom_works.citations_number
+                         FROM rolap.random_bottom_works
                                   LEFT JOIN rolap.work_citations
-                                            ON random_top_works.citations_number = work_citations.citations_number
+                                            ON random_bottom_works.citations_number = work_citations.citations_number
                                   INNER JOIN works ON work_citations.doi = works.doi
-                         WHERE works.id != random_top_works.id),
+                         WHERE works.id != random_bottom_works.id),
      random_candidate_works AS (SELECT other_work_id,
                                        citations_number,
                                        Row_number() OVER (
