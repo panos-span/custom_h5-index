@@ -7,6 +7,9 @@ CREATE INDEX IF NOT EXISTS journal_names_iss_print_idx
 CREATE INDEX IF NOT EXISTS journal_names_iss_eprint_idx
   ON journal_names(issn_eprint);
 
+CREATE INDEX IF NOT EXISTS asjc_general_fields_id_idx
+  ON asjc_general_fields(id);
+
 SELECT title, asjc_general_fields.name, h5_index FROM rolap.issn_subject_h5 LEFT JOIN journal_names
   ON rolap.issn_subject_h5.issn = journal_names.issn_print
     OR rolap.issn_subject_h5.issn = journal_names.issn_eprint
