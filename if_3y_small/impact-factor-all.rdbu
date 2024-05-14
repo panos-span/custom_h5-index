@@ -2,11 +2,11 @@ BEGIN SETUP
 
 rolap.impact_factor:
 issn	impact_factor subject
-i1	1   Math
-i2	2   Physic
-i3	3   Med
-i4e	4   Med
-i5a1	5   Law
+i1	1   M
+i2	2   P
+i3	3   Me
+i4e	4   Me
+i5a1	5   L
 
 journals_issns:
 journal_id	issn	issn_type
@@ -19,6 +19,13 @@ journal_id	issn	issn_type
 4		i4p	P
 5		i5a1	A
 5		i5a2	A
+
+asjc_general_fields:
+id  name
+M   Math
+P   Physic
+Me  Med
+L   Law
 END
 
 INCLUDE SELECT impact-factor-all.sql

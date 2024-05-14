@@ -1,6 +1,7 @@
 -- Create common electronic and print ISSN lookup
 
 CREATE TABLE rolap.works_issn_subject AS
-    SELECT id, doi,  page , Coalesce(works.issn_print, works.issn_electronic) AS issn, work_subjects.name as subject, published_year
-    FROM works INNER JOIN work_subjects ON works.id = work_subjects.work_id
+    SELECT works.id, doi, page, Coalesce(works.issn_print, works.issn_electronic) AS issn, asjcs.general_field_id as subject, published_year
+    FROM works INNER JOIN works_asjcs ON works.id = works_asjcs.work_id
+               INNER JOIN asjcs ON asjcs.id = works_asjcs.asjc_id
     WHERE issn is not null;

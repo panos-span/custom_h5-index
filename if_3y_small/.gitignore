@@ -4,7 +4,3 @@ reports
 rolap
 simple-rolap
 tables
-impact.db
-journal-names
-populate
-rolap.db

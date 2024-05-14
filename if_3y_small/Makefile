@@ -6,7 +6,7 @@
 #
 
 export MAINDB?=impact
-export DEPENDENCIES=populate journal-names
+export DEPENDENCIES=populate journal-names asjcs link-works-asjcs
 
 include ../common/Makefile
 
@@ -14,7 +14,7 @@ include ../common/Makefile
 populate: $(CROSSREF_DIR)
 	# Populate database with DOIs of works and their references
 	$(TIME) $(A3K) --debug progress populate "$(MAINDB).db" crossref "$(CROSSREF_DIR)" \
-	  --sample 'random.random() < 0.2' \
+	  --sample 'random.random() < 0.0002' \
 	  --columns works.id works.doi works.published_year works.page \
 	    work_subjects.work_id work_subjects.name \
 	    work_references.doi work_references.work_id work_references.year \
