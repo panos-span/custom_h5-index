@@ -3,7 +3,7 @@ CREATE INDEX IF NOT EXISTS work_authors_orcid_idx ON work_authors (orcid);
 CREATE TABLE rolap.random_bottom_works AS
 WITH bottom_orcids AS (SELECT orcid,
                            h5_index
-                    FROM rolap.orcid_h5_filtered
+                    FROM rolap.orcid_h5_bottom
                     WHERE h5_index > 50),
      bottom_author_works AS (SELECT DISTINCT works.doi,
                                           h5_index

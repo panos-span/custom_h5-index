@@ -1,5 +1,5 @@
 BEGIN SETUP
-rolap.orcid_h5_filtered:
+rolap.orcid_h5_bottom:
 orcid	h5_index
 o77	77
 o50	51
