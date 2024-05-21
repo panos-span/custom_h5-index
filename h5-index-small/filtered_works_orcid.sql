@@ -1,4 +1,5 @@
--- Create a table with the filtered works and their ORCID
+-- Create a table with the the authors that have works in the top journals of each subject
+-- TODO: Change the filtered with top_authors
 CREATE TABLE rolap.filtered_works_orcid AS
 SELECT DISTINCT wo.doi, wo.orcid as orcid
 FROM rolap.works_orcid wo

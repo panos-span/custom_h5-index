@@ -14,7 +14,7 @@ work_id  asjc_id
 4   null
 
 asjcs:
-id  general_field_id
+id  subject_area_id
 1   id1
 2   id2
 3   id3

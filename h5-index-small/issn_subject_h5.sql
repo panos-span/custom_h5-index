@@ -9,9 +9,9 @@ CREATE INDEX IF NOT EXISTS rolap.works_issn_subject_subject_idx ON works_issn_su
 -- Calculate the h5-index for each ISSN and Subject
 CREATE TABLE rolap.issn_subject_h5 AS
     WITH ranked_issn_citations AS (
-        SELECT issn, works_issn_subject.subject, citations_number,
+        SELECT works_issn_subject.issn, works_issn_subject.subject, citations_number,
             Row_number() OVER (
-                PARTITION BY issn, subject ORDER BY citations_number DESC) AS row_rank
+                PARTITION BY works_issn_subject.issn, works_issn_subject.subject ORDER BY citations_number DESC) AS row_rank
         FROM rolap.work_citations
         INNER JOIN rolap.works_issn_subject ON rolap.works_issn_subject.doi
             = rolap.work_citations.doi
