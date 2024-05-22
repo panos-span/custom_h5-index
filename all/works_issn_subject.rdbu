@@ -1,0 +1,34 @@
+BEGIN SETUP
+works:
+id	doi	page	issn_print	issn_electronic	published_year
+1	d1	12-15	ip1		ie1		2020
+2	d2	12-15	ip2		null		2019
+3	d3	12-15	null		ie3		2019
+4	d4	12-15	null		null		2019
+
+works_asjcs:
+work_id  asjc_id
+1   1
+2   2
+3   3
+4   null
+
+asjcs:
+id  subject_area_id
+1   id1
+2   id2
+3   id3
+4   null
+
+END
+
+
+INCLUDE CREATE works_issn_subject.sql
+
+BEGIN RESULT
+works_issn_subject:
+id doi     page 	issn    subject    published_year
+1   d1    12-15	    ip1      id1        2020
+2   d2    12-15	    ip2      id2        2019
+3   d3    12-15	    ie3      id3        2019
+END

@@ -1,0 +1,34 @@
+BEGIN SETUP
+
+rolap.works_issn_subject:
+doi	issn	subject
+doi_1	issn_1	SubjectA
+doi_2	issn_1	SubjectA
+doi_3	issn_1	SubjectB
+doi_4	issn_2	SubjectB
+doi_5	issn_2	SubjectB
+doi_6	issn_2	SubjectB
+
+rolap.work_citations:
+doi	citations_number
+doi_1	100
+doi_2	90
+doi_3	50
+doi_4	150
+doi_5	120
+doi_6	80
+
+END
+
+
+INCLUDE CREATE issn_subject_h5.sql
+
+BEGIN RESULT
+
+issn_subject_h5:
+issn	subject	h5_index
+issn_1	SubjectA	2
+issn_1  SubjectB    1
+issn_2	SubjectB	3
+
+END
