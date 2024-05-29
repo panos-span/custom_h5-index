@@ -20,7 +20,7 @@ journal_id	issn	issn_type
 5		i5a1	A
 5		i5a2	A
 
-asjc_general_fields:
+asjc_subject_areas:
 id  name
 M   Math
 P   Physic

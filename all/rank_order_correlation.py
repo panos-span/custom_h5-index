@@ -1,6 +1,8 @@
 import pandas as pd
-from scipy.stats import spearmanr, pearsonr, kendalltau
+from scipy.stats import spearmanr, pearsonr, kendalltau, somersd, weightedtau, rankdata
 from sqlalchemy import create_engine
+from itertools import permutations
+import numpy as np
 
 ROLAP_DATABASE_PATH = "rolap.db"
 
@@ -75,3 +77,7 @@ def rbo(list1, list2, p=0.9):
 # RBO for the full lists
 rbo_score = rbo(df['rank1'], df['rank2'])
 print(f'Rank Biased Overlap (RBO): {rbo_score}')
+
+# print SOMERS' D
+somersd_score = somersd(df['rank1'], df['rank2'])
+print(f'Somers\' D: {somersd_score}')

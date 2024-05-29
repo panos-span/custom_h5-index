@@ -10,7 +10,7 @@
  */
 CREATE TABLE rolap.impact_factor_titles AS
   WITH multiple_titles AS (
-    SELECT impact_factor.issn, issn_type, title, impact_factor
+    SELECT impact_factor.issn, issn_type, title, subject, impact_factor
       FROM rolap.impact_factor
       LEFT JOIN journals_issns
         ON impact_factor.issn = journals_issns.issn
@@ -22,5 +22,5 @@ CREATE TABLE rolap.impact_factor_titles AS
       Row_number() OVER (PARTITION BY issn ORDER BY issn_type DESC) AS priority
     FROM multiple_titles
   )
-  SELECT issn, title, impact_factor FROM prioritized_titles
+  SELECT issn, subject, title, impact_factor FROM prioritized_titles
     WHERE priority = 1;

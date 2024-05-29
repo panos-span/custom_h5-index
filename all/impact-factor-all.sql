@@ -11,12 +11,12 @@ WITH clean_issns AS (
     WHERE additional.issn_type = 'A'
       AND main.issn_type != 'A'
 )
-SELECT DISTINCT all_issns.issn, impact_factor, asjc_general_fields.name
+SELECT DISTINCT all_issns.issn, impact_factor, asjc_subject_areas.name
   FROM rolap.impact_factor
   LEFT JOIN clean_issns AS main
     ON main.issn = impact_factor.issn
   LEFT JOIN clean_issns AS all_issns
     ON main.journal_id = all_issns.journal_id
-  LEFT JOIN asjc_general_fields ON subject = asjc_general_fields.id
+  LEFT JOIN asjc_subject_areas ON subject = asjc_subject_areas.id
   GROUP BY all_issns.issn, subject
   ORDER BY impact_factor DESC;
