@@ -101,14 +101,14 @@ rolap_connection = sqlite3.connect(ROLAP_DATABASE_PATH)
 graph_properties(
     rolap_connection,
     graph_connection,
-    "SELECT id FROM random_bottom_works ",
-    "reports/graph-bottom.txt",
+    "SELECT id FROM random_top_works ",
+    "reports/graph-top.txt",
 )
 
 graph_properties(
     rolap_connection,
     graph_connection,
-    "SELECT id FROM random_other_works ",
+    "SELECT id FROM random_top_other_works ",
     "reports/graph-other.txt",
 )
 
