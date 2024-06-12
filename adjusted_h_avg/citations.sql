@@ -10,7 +10,7 @@ CREATE INDEX IF NOT EXISTS work_references_work_id_idx
 CREATE INDEX IF NOT EXISTS work_references_doi_idx ON work_references(doi);
 
 CREATE TABLE rolap.citations AS
-  SELECT cited_work.issn, cited_work.subject, COUNT(*) AS citations_number
+  SELECT cited_work.issn, cited_work.subject as subject, COUNT(*) AS citations_number
   FROM work_references
   INNER JOIN rolap.works_issn_subject AS citing_work
     ON work_references.work_id = citing_work.id

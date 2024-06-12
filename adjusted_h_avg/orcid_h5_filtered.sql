@@ -11,7 +11,7 @@ CREATE TABLE rolap.orcid_h5_filtered AS
 WITH ranked_orcid_citations AS (
     SELECT wo.orcid, wo.subject, wc.citations_number,
            ROW_NUMBER() OVER (
-               PARTITION BY wo.orcid ORDER BY wc.citations_number DESC
+               PARTITION BY wo.orcid, wo.subject ORDER BY wc.citations_number DESC
            ) AS row_rank
     FROM rolap.work_citations wc
     INNER JOIN rolap.filtered_works_orcid wo 
