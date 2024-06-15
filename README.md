@@ -49,7 +49,7 @@ The results demonstrate that the adjusted H5-Indexes are significantly correlate
 Contributions to this project are welcome. Please fork the repository and submit pull requests with any improvements or new features.
 
 ## License
-This project is licensed under the MIT License. See the LICENSE file for details.
+This project is licensed under the Apache 2.0 License. See the LICENSE file for details.
 
 ## Contact
 For any questions or suggestions, please open an issue or contact the project maintainers.
