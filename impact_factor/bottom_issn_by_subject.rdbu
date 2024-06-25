@@ -1,0 +1,34 @@
+BEGIN SETUP
+rolap.impact_factor:
+issn  subject citations_number  publications_number impact_factor
+ISSN1  Subject1    1  1   10.0
+ISSN2  Subject1    1  1   9.5
+ISSN3  Subject1    1  1   8.0
+ISSN4  Subject1    1  1   7.0
+ISSN5  Subject1    1  1   6.0
+ISSN6  Subject2    1  1   12.0
+ISSN7  Subject2    1  1   11.0
+ISSN8  Subject2    1  1   10.0
+ISSN9  Subject2    1  1   9.0
+ISSN10 Subject2    1  1   8.0
+ISSN3  Subject2    1  1   7.5
+ISSN6  Subject3    1  1   2
+ISSN11 Subject3    1  1   1
+ISSN12 Subject3    1  1   1
+ISSN13 Subject3    1  1   1
+END
+
+INCLUDE CREATE bottom_issn_by_subject.sql
+
+BEGIN RESULT
+bottom_issn_by_subject:
+issn subject
+ISSN5  Subject1
+ISSN4  Subject1
+ISSN3  Subject1
+ISSN10 Subject2
+ISSN9  Subject2 
+ISSN8  Subject2
+ISSN11 Subject3
+ISSN12 Subject3
+END

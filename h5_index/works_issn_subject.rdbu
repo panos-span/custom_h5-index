@@ -1,0 +1,25 @@
+BEGIN SETUP
+works:
+doi issn_print	issn_electronic
+d1 ip1		ie1
+d2 ip2		null
+d3 null		ie3
+d4 null		null
+
+journal_data:
+ISSN  Subject
+ip1   id1
+ip2   id2
+ie3   id3
+END
+
+
+INCLUDE CREATE works_issn_subject.sql
+
+BEGIN RESULT
+works_issn_subject:
+doi	issn    subject
+ d1    ip1      id1   
+ d2    ip2      id2   
+ d3    ie3      id3   
+END
