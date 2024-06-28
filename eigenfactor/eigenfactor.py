@@ -1,6 +1,11 @@
 import pandas as pd
 import numpy as np
 import sqlite3
+from tqdm import tqdm
+
+# Constants
+alpha = 0.85
+epsilon = 0.00001
 
 # Read the text file and replace '|' with ','
 input_file = 'get_citation_network copy.txt'
@@ -16,72 +21,63 @@ with open(output_file, 'w') as file:
     file.write(file_content)
 
 # Load the citation network
-df = pd.read_csv('get_citation_network.csv', header=None,
-                 names=['citing_issn', 'cited_issn', 'subject', 'citation_count'])
+df = pd.read_csv(output_file, header=None, names=['citing_issn', 'cited_issn', 'subject', 'citation_count'])
 
-# Aggregate citation counts to avoid duplicates
-df_aggregated = df.groupby(['cited_issn', 'citing_issn', 'subject'], as_index=False).sum()
+# Create a function to calculate Eigenfactor for each subject
+def calculate_eigenfactor_for_subject(group):
+    journals = sorted(set(group['citing_issn']).union(set(group['cited_issn'])))
+    journal_index = {journal: i for i, journal in enumerate(journals)}
+    n = len(journals)
 
-# Create a pivot table to form the citation matrix by subject
-subject_groups = df_aggregated.groupby('subject')
-eigenfactor_results = []
+    # Create adjacency matrix Z
+    Z = np.zeros((n, n))
+    for _, row in group.iterrows():
+        citing_idx = journal_index[row['citing_issn']]
+        cited_idx = journal_index[row['cited_issn']]
+        Z[citing_idx, cited_idx] += row['citation_count']
 
-for subject, group in subject_groups:
-    citation_matrix = group.pivot(index='cited_issn', columns='citing_issn', values='citation_count').fillna(0)
+    # Modify adjacency matrix
+    np.fill_diagonal(Z, 0)
+    column_sums = Z.sum(axis=0)
+    H = np.divide(Z, column_sums, out=np.zeros_like(Z), where=column_sums != 0)
 
-    # Ensure the matrix is square by adding missing columns
-    all_issns = set(citation_matrix.index).union(set(citation_matrix.columns))
-    citation_matrix = citation_matrix.reindex(index=all_issns, columns=all_issns, fill_value=0)
-
-    # Normalize the matrix to create a transition matrix
-    column_sums = citation_matrix.sum(axis=0)
-    transition_matrix = citation_matrix.div(column_sums, axis=1).fillna(0)  # Fill NaN to handle division by zero
-
-    # Handle dangling nodes by redistributing to all nodes
-    article_vector = citation_matrix.sum(axis=1) / citation_matrix.values.sum()
+    # Handle dangling nodes
     dangling_nodes = column_sums == 0
-    transition_matrix.loc[:, dangling_nodes] = article_vector.values[:, None]  # Convert to numpy array before indexing
+    article_vector = np.ones(n) / n
+    H[:, dangling_nodes] = article_vector[:, None]
 
-    # Initialize scores (PageRank-like)
-    num_journals = transition_matrix.shape[0]
-    eigenfactor_scores = np.ones(num_journals) / num_journals
-
-    # Damping factor
-    damping_factor = 0.85
-    random_jump = (1 - damping_factor) / num_journals
-
-    # Define the matrix P
-    P = damping_factor * transition_matrix + (1 - damping_factor) * article_vector.values[:, None]
-
-    # Iterate until convergence
+    # Calculate influence vector
+    pi = np.ones(n) / n
+    residual = np.inf
     iteration = 0
-    max_iterations = 100
-    tolerance = 1e-6
-    delta = 1
-    while delta > tolerance and iteration < max_iterations:
-        new_scores = P.dot(eigenfactor_scores)
-        delta = np.linalg.norm(new_scores - eigenfactor_scores, 1)  # Using L1 norm for convergence check
-        eigenfactor_scores = new_scores
+
+    while residual > epsilon and iteration < 100:
+        new_pi = alpha * H.dot(pi) + (alpha * dangling_nodes.dot(pi) + (1 - alpha)) * article_vector
+        residual = np.linalg.norm(new_pi - pi, 1)
+        pi = new_pi
         iteration += 1
 
-    # Normalize eigenfactor scores
-    total_weighted_citations = (transition_matrix.dot(eigenfactor_scores)).sum()
-    eigenfactor_scores_normalized = 100 * eigenfactor_scores / total_weighted_citations
+    # Normalize influence vector
+    pi /= pi.sum()
 
-    # Log transform the normalized Eigenfactor scores
-    log_normalized_eigenfactor_scores = np.log1p(eigenfactor_scores_normalized)  # Use log1p to handle log(0)
-
-    # Normalize by the average score to get the final normalized Eigenfactor score
-    final_normalized_eigenfactor_scores = log_normalized_eigenfactor_scores / log_normalized_eigenfactor_scores.mean()
+    # Calculate Eigenfactor Scores
+    EF = 100 * H.dot(pi) / H.dot(pi).sum()
 
     # Create a DataFrame for the scores
     eigenfactor_df = pd.DataFrame({
-        'issn': citation_matrix.index,
-        'subject': subject,
-        'eigenfactor_score': final_normalized_eigenfactor_scores
+        'issn': journals,
+        'eigenfactor_score': EF
     })
 
-    eigenfactor_results.append(eigenfactor_df)
+    return eigenfactor_df
+
+# Group by subject and calculate Eigenfactor scores
+eigenfactor_results = []
+
+for subject, group in tqdm(df.groupby('subject')):
+    subject_eigenfactor_df = calculate_eigenfactor_for_subject(group)
+    subject_eigenfactor_df['subject'] = subject
+    eigenfactor_results.append(subject_eigenfactor_df)
 
 # Combine results from all subjects
 eigenfactor_combined_df = pd.concat(eigenfactor_results, ignore_index=True)

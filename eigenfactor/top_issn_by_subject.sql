@@ -1,15 +1,7 @@
 CREATE TABLE rolap.top_issn_by_subject AS
-WITH ranked_issns AS (
-    SELECT issn, subject, eigenfactor_score,
-           ROW_NUMBER() OVER (PARTITION BY subject ORDER BY eigenfactor_score DESC) AS rank,
-           COUNT(*) OVER (PARTITION BY subject) AS total_journals
-    FROM eigenfactor_scores
-),
-cutoff_ranks AS (
-    SELECT subject, ROUND(0.2 * total_journals + 0.4999) AS cutoff_rank
-    FROM (SELECT subject, MAX(rank) AS total_journals FROM ranked_issns GROUP BY subject)
-)
-SELECT r.issn, r.subject
-FROM ranked_issns r
-JOIN cutoff_ranks c ON r.subject = c.subject
-WHERE r.rank <= c.cutoff_rank;
+    SELECT issn, subject
+    FROM (SELECT issn,
+                 subject,
+                 PERCENT_RANK() OVER (PARTITION BY subject ORDER BY eigenfactor_score DESC) AS issn_percentile_rank
+          FROM eigenfactor_scores) ranked_issns
+    WHERE issn_percentile_rank <= 0.2;
