@@ -94,7 +94,7 @@ widely used metric that measures the average number of citations received by art
 implementation includes:
 
 - Data extraction from the Alexandria3k tool.
-- Calculation of the JIF-adjusted H-Index for top authors.
+- Calculation of the JIF-adjusted H-Index authors.
 - Analysis of citation practices and patterns based on the JIF ranking.
 - Comparison of top authors publishing in lower-tier journals with random authors publishing in top-tier journals.
 
@@ -105,6 +105,6 @@ H-Index that measures the productivity and impact of researchers based on the nu
 five years. The implementation includes:
 
 - Data extraction from the Alexandria3k tool.
-- Calculation of the H5-Index-adjusted H-Index for top authors.
+- Calculation of the H5-Index-adjusted H-Index for authors.
 - Analysis of citation practices and patterns based on the H5-Index ranking.
 - Comparison of top authors publishing in lower-tier journals with random authors publishing in top-tier journals.
