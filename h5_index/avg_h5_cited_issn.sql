@@ -3,19 +3,22 @@ WITH top_bottom_authors AS (
     SELECT orcid, h5_index, subject, 
            ROW_NUMBER() OVER (PARTITION BY subject ORDER BY h5_index DESC) AS rn
     FROM rolap.orcid_h5_bottom
-    WHERE h5_index IS NOT NULL -- LIMIT 200 INSTEAD
+    WHERE h5_index IS NOT NULL 
 ),
-filtered_top_bottom_authors AS ( -- REMOVE
-    SELECT orcid, h5_index, subject, rn -- REMOVE
-    FROM top_bottom_authors -- REMOVE
-    WHERE rn <= 50 -- REMOVE
+filtered_top_bottom_authors AS ( 
+    SELECT orcid, h5_index, subject, rn
+    FROM top_bottom_authors
+    WHERE rn <= 50
 ),
 -- Step 2: Select random authors from orcid_h5_filtered with matching h-index
 random_matching_authors AS (
     SELECT orcid, h5_index, subject,
-           ROW_NUMBER() OVER (PARTITION BY h5_index ORDER BY substr(orcid * 0.54534238371923827955579364758491, length(orcid) + 2)) AS rn
+           ROW_NUMBER() OVER (PARTITION BY h5_index 
+           ORDER BY substr(orcid * 0.54534238371923827955579364758491, 
+           length(orcid) + 2)) AS rn
     FROM rolap.orcid_h5_filtered
-    WHERE (h5_index, subject) IN (SELECT h5_index, subject FROM filtered_top_bottom_authors) -- CHANGE with top_bottom_authors
+    WHERE (h5_index, subject) IN (
+        SELECT h5_index, subject FROM filtered_top_bottom_authors)
 ),
 -- Step 3: Ensure 1-to-1 matching based on row number (rn)
 matched_authors AS (
@@ -25,7 +28,7 @@ matched_authors AS (
            rma.orcid AS random_orcid,
            rma.h5_index AS random_h5_index,
            rma.subject AS random_subject
-    FROM filtered_top_bottom_authors tba -- CHANGE with top_bottom_authors
+    FROM filtered_top_bottom_authors tba
     JOIN random_matching_authors rma ON tba.h5_index = rma.h5_index AND tba.rn = rma.rn
 ),
 -- Step 4: Count the h-index of cited journals (issns) for each author in top_bottom_authors

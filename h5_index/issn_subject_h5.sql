@@ -11,7 +11,8 @@ CREATE TABLE rolap.issn_subject_h5 AS
     WITH ranked_issn_citations AS (
         SELECT works_issn_subject.issn, works_issn_subject.subject, citations_number,
             Row_number() OVER (
-                PARTITION BY works_issn_subject.issn, works_issn_subject.subject ORDER BY citations_number DESC) AS row_rank
+                PARTITION BY works_issn_subject.issn, works_issn_subject.subject
+                 ORDER BY citations_number DESC) AS row_rank
         FROM rolap.work_citations
         INNER JOIN rolap.works_issn_subject ON rolap.works_issn_subject.doi
             = rolap.work_citations.doi

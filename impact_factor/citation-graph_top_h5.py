@@ -44,7 +44,9 @@ def add_citation_edges(connection, graph, start, depth):
 
     # Incoming references
     work_doi = workid_doi(cursor, start)
-    cursor.execute("SELECT work_id FROM work_references WHERE doi = ?", (work_doi,))
+    cursor.execute(
+        "SELECT work_id FROM work_references WHERE doi = ?", (work_doi,)
+    )
     for (id,) in cursor:
         graph.add_edge(start, id)
         add_citation_edges(connection, graph, id, depth - 1)
@@ -66,16 +68,17 @@ def graph_properties(rolap_connection, graph_connection, selection, file_name):
     cursor = rolap_connection.cursor()
     cursor.execute(selection)
     with open(file_name, "w") as fh:
-        for (id, subject ) in cursor:
+        for id, subject in cursor:
             graph = citation_graph(graph_connection, id)
             print(id, graph)
             avg_clustering = nx.average_clustering(graph)
-            #avg_path_length = nx.average_shortest_path_length(graph)
+            # avg_path_length = nx.average_shortest_path_length(graph)
             fh.write(f"{subject}\t{avg_clustering}\n")
             if avg_clustering > 0.07:
                 s.add(id)
             print(id, subject, avg_clustering)
     cursor.close()
+
 
 def visualize_graph(graph, file_name):
     pos = nx.spring_layout(graph)
@@ -83,6 +86,7 @@ def visualize_graph(graph, file_name):
     nx.draw(graph, pos, with_labels=True, node_size=50, font_size=8)
     plt.savefig(file_name, format="pdf")
     plt.close()
+
 
 graph_connection = sqlite3.connect(GRAPH_DATABASE_PATH)
 rolap_connection = sqlite3.connect(ROLAP_DATABASE_PATH)

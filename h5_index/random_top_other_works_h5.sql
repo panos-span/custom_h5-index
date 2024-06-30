@@ -1,5 +1,7 @@
-CREATE INDEX IF NOT EXISTS rolap.work_citations_citations_number_idx ON work_citations (citations_number);
-CREATE INDEX IF NOT EXISTS rolap.random_top_works_h5_citations_number_idx ON random_top_works_h5 (citations_number);
+CREATE INDEX IF NOT EXISTS rolap.work_citations_citations_number_idx 
+    ON work_citations (citations_number);
+CREATE INDEX IF NOT EXISTS rolap.random_top_works_h5_citations_number_idx 
+    ON random_top_works_h5 (citations_number);
 
 CREATE TABLE rolap.random_top_other_works_h5 AS
 WITH candidate_works AS (

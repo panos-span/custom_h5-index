@@ -27,9 +27,5 @@ h5_index_per_subject AS (
     FROM eligible_ranks
     GROUP BY orcid, subject
 )
-SELECT h5_index_per_subject.orcid AS orcid, h5_index_per_subject.subject, h5_index_per_subject.h5_index AS h5_index, 
-       avg_hindex_by_subject_bottom.avg_h5_index AS avg_subject_h5_index,
-       ROUND(h5_index_per_subject.h5_index / avg_hindex_by_subject_bottom.avg_h5_index , 3) AS adjusted_h5_index
+SELECT h5_index_per_subject.orcid AS orcid, h5_index_per_subject.subject, h5_index_per_subject.h5_index AS h5_index
 FROM h5_index_per_subject
-INNER JOIN rolap.avg_hindex_by_subject_bottom
-ON h5_index_per_subject.subject = avg_hindex_by_subject_bottom.subject;
