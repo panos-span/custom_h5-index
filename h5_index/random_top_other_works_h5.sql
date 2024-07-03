@@ -10,8 +10,10 @@ WITH candidate_works AS (
            random_top_works_h5.citations_number,
            random_top_works_h5.subject
     FROM rolap.random_top_works_h5
-    LEFT JOIN rolap.work_citations ON random_top_works_h5.citations_number = work_citations.citations_number
-    INNER JOIN works_issn_subject ON work_citations.doi = works_issn_subject.doi
+    LEFT JOIN rolap.work_citations 
+        ON random_top_works_h5.citations_number = work_citations.citations_number
+    INNER JOIN works_issn_subject 
+        ON work_citations.doi = works_issn_subject.doi
     WHERE works_issn_subject.id != random_top_works_h5.id
 ),
 random_candidate_works AS (
